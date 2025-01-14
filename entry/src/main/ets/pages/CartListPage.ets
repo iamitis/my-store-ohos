@@ -20,18 +20,18 @@ export struct CartListPage {
   }
 
   build() {
-    Column() {
-      if (this.cartList.length > 0) {
-        List({ space: 10 }) {
-          ForEach(this.cartList, (item: Cart) => {
-            ListItem() {
-              CartCard({ cart: item })
-            }
-          })
-        }
-      } else {
-        Text('暂无购物车商品').fontSize(30)
-      }
+    if (this.cartList.length > 0) {
+      List({ space: 10 }) {
+        ForEach(this.cartList, (item: Cart) => {
+          ListItem() {
+            CartCard({ cart: item })
+          }
+        })
+      }.padding({left: 8, right: 8})
+      .width('100%').height('100%')
+      .scrollBar(BarState.Off)
+    } else {
+      Text('暂无购物车商品').fontSize(30)
     }
   }
 }

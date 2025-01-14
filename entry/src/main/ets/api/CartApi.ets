@@ -1,6 +1,8 @@
 import { session } from '../utils/RequestUtil';
 import { Product } from './ProductApi'
 
+const CARTS = "users";
+
 export interface Cart {
   cartItemId?: number,
   userId: number,
@@ -8,8 +10,6 @@ export interface Cart {
   product: Product,
   // ...
 }
-
-const CARTS = "users";
 
 export async function getShoppingCart(userId: number) {
   return await session.get(`${CARTS}/getShoppingCart/${userId}`);

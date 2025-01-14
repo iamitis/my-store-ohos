@@ -1,7 +1,7 @@
 import { rcp } from '@kit.RemoteCommunicationKit';
 
 const sessionConfig: rcp.SessionConfiguration = {
-  baseAddress: "http://10.0.2.2:8080/api/",
+  baseAddress: "http://172.29.4.151:8080/api/",
   headers: {
     "Content-Type": "application/json"
   },

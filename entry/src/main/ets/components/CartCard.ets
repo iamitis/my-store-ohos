@@ -10,6 +10,7 @@ export struct CartCard {
       Text(this.cart.product.productName)
     }.width('100%')
     .height(100)
-    .backgroundColor(Color.Gray)
+    .backgroundColor('#ffd6d4d4')
+    .borderRadius(10)
   }
 }

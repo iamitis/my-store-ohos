@@ -29,32 +29,30 @@ export struct Discount {
   build() {
     Navigation(this.router) {
       Column() {
-        Row() {
-          Text('近期折扣').fontSize(30).fontWeight(FontWeight.Bold)
-        }.margin({ top: 10 })
-
         if (this.discountList.length > 0) {
-          List({ space: 10 }) {
+          List({ space: 15 }) {
             ForEach(this.discountList, (item: Product) => {
               ListItem() {
                 ProductCard({ product: item })
-                  .onClick(() => {
-                    this.router.pushPathByName('ProductDetail', item)
-                  })
               }
             })
           } // list
-          .lanes({ minLength: 160, maxLength: 160 })
+          .height('100%').width('100%')
+          .lanes(2)
           .alignListItem(ListItemAlign.Center)
           .margin({ top: 10 })
           .layoutWeight(1)
+          .scrollBar(BarState.Off)
         } else {
           Text('暂无商品')
         }
       } // col
-      .justifyContent(FlexAlign.Start)
       .height('100%')
+      .padding({left: 8, right: 8})
     } // nav
     .navDestination(this.navTo)
+    .title('热门折扣')
+    .titleMode(NavigationTitleMode.Mini)
+    .hideBackButton(true)
   } // build
 }

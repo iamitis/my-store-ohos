@@ -1,5 +1,7 @@
 import { session } from '../utils/RequestUtil'
 
+const USERS = 'users';
+
 export interface User {
   id?: number,
   role: string,
@@ -7,8 +9,6 @@ export interface User {
   password: string,
   related_phone: string,
 };
-
-const USERS = 'users';
 
 export async function getUserById(id: number) {
   return await session.get(`${USERS}/getInformation/${id}`);
