@@ -3,7 +3,7 @@ import { session } from '../utils/RequestUtil';
 const PRODUCTS = 'newProducts';
 
 export interface Product {
-  productId: number,
+  productId?: number,
   productCategory: string,
   productName: string,
   productOriginalPrice: number,
@@ -16,16 +16,16 @@ export interface Product {
 
 export interface ProductAttribute {
   productAttributeId?: number;
-  productAttributeName?: string; // 属性名，如食品的口味 flavor，服饰的季节 season
-  displayName?: string; // 显示名，如"口味", "季节"
-  productCategory?: string; // 所属类别, 属于食品还是服饰
+  productAttributeName: string; // 属性名，如食品的口味 flavor，服饰的季节 season
+  displayName: string; // 显示名，如"口味", "季节"
+  productCategory: string; // 所属类别, 属于食品还是服饰
 }
 
 export interface ProductAttributeValue {
   productAttributeValueId?: number;
-  product?: Product;
-  productAttribute?: ProductAttribute;
-  value?: string; // 属性值，如"香辣", "春季"
+  product: Product;
+  productAttribute: ProductAttribute;
+  value: string; // 属性值，如"香辣", "春季"
 }
 
 export interface FilterInfo {

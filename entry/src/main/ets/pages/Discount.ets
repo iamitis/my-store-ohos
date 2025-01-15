@@ -6,7 +6,7 @@ import { ProductDetail } from './ProductDetail'
 
 @Component
 export struct Discount {
-  @State private discountList: Product[] = []
+  @State discountList: Product[] = []
   @Provide('router') router: NavPathStack = new NavPathStack()
 
   async aboutToAppear() {

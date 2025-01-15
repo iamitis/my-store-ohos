@@ -2,7 +2,7 @@ import { formatPrice, Product } from '../api/ProductApi';
 
 @Component
 export struct ProductCard {
-  @Prop private product: Product;
+  @Prop product: Product;
   @Consume('router') router: NavPathStack;
 
   build() {
