@@ -1,7 +1,7 @@
 @Component
 export struct UserPage {
   build() {
-    Tabs({barPosition: BarPosition.Start}) {
+    Tabs({ barPosition: BarPosition.Start }) {
       TabContent() {
         Text('Profile')
       }.tabBar('总览')

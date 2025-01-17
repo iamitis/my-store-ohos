@@ -2,21 +2,27 @@ import { Category, filterProducts, Product } from '../api/ProductApi';
 import { ProductCard } from '../components/ProductCard';
 import { GenericResponse } from '../utils/RequestUtil';
 
+@Builder
+export function ProductListBuilder(name: string, param: Category) {
+  ProductList({category: param});
+}
+
 @Component
 export struct ProductList {
-  @Consume('router') router: NavPathStack;
+  router: NavPathStack = new NavPathStack();
   @State category: Category | null = null;
   @State productList: Product[] = [];
 
   async aboutToAppear() {
-    this.category = await this.router.getParamByName('ProductList')[0] as Category;
-    const response = await filterProducts(this.category.categoryName, new Map());
-    if (response) {
-      const parsedResponse: GenericResponse<Product[]> = JSON.parse(response.toString()!);
-      if (parsedResponse.code !== '000') {
-        console.log('获取商品列表失败' + parsedResponse.msg)
-      } else {
-        this.productList = parsedResponse.result
+    if (this.category) {
+      const response = await filterProducts(this.category.categoryName, new Map());
+      if (response) {
+        const parsedResponse: GenericResponse<Product[]> = JSON.parse(response.toString()!);
+        if (parsedResponse.code !== '000') {
+          console.log('获取商品列表失败' + parsedResponse.msg)
+        } else {
+          this.productList = parsedResponse.result
+        }
       }
     }
   }
@@ -28,6 +34,7 @@ export struct ProductList {
           ForEach(this.productList, (item: Product) => {
             ListItem() {
               ProductCard({ product: item })
+                .onClick(() => {this.router.pushPathByName('ProductDetail', item)})
             }
           })
         } // list
@@ -42,5 +49,8 @@ export struct ProductList {
       }
     }.padding({left: 8, right: 8})
     .title(this.category?.displayName)
+    .onReady((context: NavDestinationContext) => {
+      this.router = context.pathStack;
+    })
   }
 }

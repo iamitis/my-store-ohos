@@ -3,7 +3,6 @@ import { formatPrice, Product } from '../api/ProductApi';
 @Component
 export struct ProductCard {
   @Prop product: Product;
-  @Consume('router') router: NavPathStack;
 
   build() {
     Column() {
@@ -27,8 +26,5 @@ export struct ProductCard {
       }.width(160)
       .margin({top: 2})
     }
-    .onClick(() => {
-      this.router.pushPathByName('ProductDetail', this.product)
-    })
   }
 }
