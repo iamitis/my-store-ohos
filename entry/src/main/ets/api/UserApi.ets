@@ -27,3 +27,24 @@ export interface AddressInfo {
 export async function getAllAddressInfo(userId: number) {
   return await session.get(`users/getAllAddressInfo/${userId}`);
 }
+export interface LoginInfo {
+  phone: string,
+  password: string,
+};
+
+export interface ResponInfo{
+    timestamp: string,
+    status: number,
+}
+export async function login(thePhone: string,thePassword: string) {
+  const loginInfo: LoginInfo = {
+    phone: thePhone,
+    password: thePassword,
+  }
+  return await session.post(`${USERS}/login`, loginInfo)
+}
+
+export async function register(user:User) {
+  return await session.post(`${USERS}/register`,user);
+}
+
