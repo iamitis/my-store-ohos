@@ -8,12 +8,16 @@ export interface Cart {
   userId: number,
   quantity: number,
   product: Product,
+  productOptionValues?: ProductOptionValue[],
+  cartItemDate?: Date,
   // ...
 }
 
 export interface ProductOptionValue {
     productOptionValueId?:number,
-
+    productId?: number,
+    productOptionName?:string,
+    value?: string
 }
 
 export async function getShoppingCart(userId: number) {

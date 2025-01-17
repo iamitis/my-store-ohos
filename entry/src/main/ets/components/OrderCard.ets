@@ -1,6 +1,4 @@
-import { CartCard} from './CartCard'
 import {Order} from  '../api/OrderApi'
-import {Cart} from '../api/CartApi'
 import {formatDate} from '../utils/CommonUtil'
 import { formatPrice } from '../api/ProductApi'
 
@@ -16,7 +14,6 @@ export struct OrderCard {
           Text("完成日期：" + formatDate(this.order.createDate)).fontSize(15)
         }
         Row(){
-          Image(this.order.products[0].product.productImages[0])
           Text("实付：" + formatPrice(this.order.totalPrice!)).margin({left:25, right:25, top:50}).fontSize(15);
           Text("订单状态：" + this.order.orderStatus).margin({top:50}).fontSize(15);
         }

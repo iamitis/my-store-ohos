@@ -1,20 +1,9 @@
 import { CATEGORIES, Category } from '../api/ProductApi'
-import { ProductDetail } from './ProductDetail';
-import { ProductList } from './ProductList';
 
 @Component
 export struct CategoryPage {
-  private categoryList: Category[] = CATEGORIES;
-  @Provide('router') router: NavPathStack = new NavPathStack();
-
-  @Builder
-  navTo(name: string) {
-    if (name === 'ProductList') {
-      ProductList();
-    } else if (name === 'ProductDetail') {
-      ProductDetail();
-    }
-  }
+  categoryList: Category[] = CATEGORIES;
+  router: NavPathStack = new NavPathStack();
 
   build() {
     Navigation(this.router) {
@@ -27,21 +16,21 @@ export struct CategoryPage {
               })
           }
         })
-      }.width('100%')
+      }
+      .width('100%')
       .height('100%')
       .alignListItem(ListItemAlign.Center)
       .margin({ top: 20 })
       .layoutWeight(1)
-      .edgeEffect(EdgeEffect.Spring, {alwaysEnabled: false})
-    }.navDestination(this.navTo)
+      .edgeEffect(EdgeEffect.Spring, { alwaysEnabled: false })
+    }
     .hideToolBar(true)
-    .padding({bottom: 0})
+    .padding({ bottom: 0 })
     .height('100%')
     .title('分类')
     .titleMode(NavigationTitleMode.Mini)
     .hideBackButton(true)
   }
-
 }
 
 @Component
