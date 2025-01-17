@@ -26,16 +26,27 @@ export struct AddressPage {
       List({ space: 15 }) {
         ForEach(this.addressList, (item: AddressInfo, index: number) => {
           ListItem() {
-            AddressCard({ address: item, index: index, handleEdit: this.editAddress })
+            // AddressCard({ address: item, index: index, handleEdit: this.editAddress })
+            AddressCard({ address: item, index: index})
           }
         })
       }.width('100%').height('100%')
       .padding(15)
       .divider({ strokeWidth: 1, color: '#ffd9d9d9' })
+
+      Row() {
+          Text('添加地址')
+            .textAlign(TextAlign.Center)
+            .width('100%')
+            .fontColor(Color.White).fontWeight(FontWeight.Bold)
+
+      }.width(200).height(50)
+      .position({ bottom: 10, right: 10 })
+      .borderRadius(25)
     }
   }
 
-  editAddress(index: number): void {
-    promptAction.showToast({ message: 'edit: ' + index.toString() })
-  }
+  // editAddress(index: number): void {
+  //   promptAction.showToast({ message: 'edit: ' + index.toString() })
+  // }
 }

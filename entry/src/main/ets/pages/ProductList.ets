@@ -59,5 +59,6 @@ export struct ProductList {
     .onReady((context: NavDestinationContext) => {
       this.router = context.pathStack;
     })
+    .backgroundColor('#FFFAFA')
   }
 }

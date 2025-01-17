@@ -4,7 +4,6 @@ import { GenericResponse } from '../utils/RequestUtil';
 import { CartCard } from '../components/CartCard';
 import { Cart } from '../api/CartApi'
 import { formatPrice } from '../api/ProductApi';
-
 @Component
 export struct CartListPage {
   @State cartList: Cart[] = []
@@ -44,7 +43,7 @@ export struct CartListPage {
         }.padding({left: 15, right: 15})
         .width('100%').height('100%')
         .scrollBar(BarState.Off)
-        .divider({strokeWidth: 1, color: '#ffd6d4d4'})
+        .divider({strokeWidth: 6, color: '#F5F5F5'})
 
         // 结算按钮
         // Row() {

@@ -42,5 +42,6 @@ export struct Orders {
         Text('暂无订单').fontSize(30)
       }
     }
+    .backgroundColor('#FFFAFA')
   }
 }

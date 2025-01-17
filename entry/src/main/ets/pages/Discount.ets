@@ -54,5 +54,6 @@ export struct Discount {
     .title('热门折扣')
     .titleMode(NavigationTitleMode.Mini)
     .hideBackButton(true)
+    .backgroundColor('#FFFAFA')
   } // build
 }
