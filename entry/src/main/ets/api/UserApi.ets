@@ -23,7 +23,7 @@ export interface AddressInfo {
   receiver: string, // 收件人
   isDefault: boolean, // 是否为默认地址
 }
-
+@Concurrent
 export async function getAllAddressInfo(userId: number) {
   return await session.get(`users/getAllAddressInfo/${userId}`);
 }
@@ -43,10 +43,11 @@ export async function login(thePhone: string,thePassword: string) {
   }
   return await session.post(`${USERS}/login`, loginInfo)
 }
-
+@Concurrent
 export async function register(user:User) {
-  return await session.post(`${USERS}/register`,user);
+  return await session.post(`${'users'}/register`,user);
 }
+@Concurrent
 export async function deleteAddressInfo(addressInfoId: number) {
-  return await session.delete(`${USERS}/deleteAddressInfo/${addressInfoId}`);
+  return await session.delete(`${'users'}/deleteAddressInfo/${addressInfoId}`);
 }

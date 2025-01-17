@@ -157,7 +157,6 @@ export struct ProductDetail {
 
       router.pushPathByName('BuyPage', product)
   }
-
   async handleAddToCart() {
     this.isAddingToCart = true;
     const cart: Cart = {

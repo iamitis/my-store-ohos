@@ -28,10 +28,10 @@ OrderStatusMap.set(OrderStatus.UNGET, '已发货');
 OrderStatusMap.set(OrderStatus.UNCOMMENT, '待评价');
 OrderStatusMap.set(OrderStatus.DONE, '已完成');
 
+@Concurrent
 export async function getAllOrders(userId:number) {
-  return await session.get(`${ORDER}/getAllOrders/${userId}`);
+  return await session.get(`${"users"}/getAllOrders/${userId}`);
 }
-
 export async function createOrder(userId: number, productList: Cart[], addressInfoId: number) {
   const order: Order = {
     userId: userId,
