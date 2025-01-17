@@ -1,7 +1,7 @@
-import {getAllOrders} from '../../api/OrderApi'
-import {Order} from '../../api/OrderApi'
-import {OrderCard} from '../../components/OrderCard'
-import { GenericResponse } from '../../utils/RequestUtil';
+import {getAllOrders} from '../api/OrderApi'
+import {Order} from '../api/OrderApi'
+import {OrderCard} from '../components/OrderCard'
+import { GenericResponse } from '../utils/RequestUtil';
 import { promptAction } from '@kit.ArkUI';
 
 @Component

@@ -11,6 +11,11 @@ export interface Cart {
   // ...
 }
 
+export interface ProductOptionValue {
+    productOptionValueId?:number,
+
+}
+
 export async function getShoppingCart(userId: number) {
   return await session.get(`${CARTS}/getShoppingCart/${userId}`);
 }
