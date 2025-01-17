@@ -32,6 +32,10 @@ export interface LoginInfo {
   password: string,
 };
 
+export interface ResponInfo{
+    timestamp: string,
+    status: number,
+}
 export async function login(thePhone: string,thePassword: string) {
   const loginInfo: LoginInfo = {
     phone: thePhone,
@@ -43,6 +47,4 @@ export async function login(thePhone: string,thePassword: string) {
 export async function register(user:User) {
   return await session.post(`${USERS}/register`,user);
 }
-export async function deleteAddressInfo(addressInfoId: number) {
-  return await session.delete(`${USERS}/deleteAddressInfo/${addressInfoId}`);
-}
+

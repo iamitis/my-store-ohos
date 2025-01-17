@@ -1,7 +1,7 @@
-import { AddressInfo, getAllAddressInfo } from '../api/UserApi'
+import { AddressInfo, getAllAddressInfo } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
 import { AddressCard } from '../components/AddressCard';
-import { promptAction } from '@kit.ArkUI';
+import { promptAction, router } from '@kit.ArkUI';
 
 @Component
 export struct AddressPage {
@@ -19,34 +19,39 @@ export struct AddressPage {
   }
 
   build() {
-    Column() {
+    Flex({ direction: FlexDirection.Column }) {
       if (this.isGettingAddress) {
-        LoadingProgress().width(100).height(100)
+        LoadingProgress().width(100).height(100);
       }
       List({ space: 15 }) {
         ForEach(this.addressList, (item: AddressInfo, index: number) => {
           ListItem() {
-            // AddressCard({ address: item, index: index, handleEdit: this.editAddress })
-            AddressCard({ address: item, index: index})
+            AddressCard({ address: item, index: index, handleEdit: this.editAddress });
           }
         })
-      }.width('100%').height('100%')
+      }
+      .width('100%')
+      .height('100%')
       .padding(15)
-      .divider({ strokeWidth: 1, color: '#ffd9d9d9' })
+      .divider({ strokeWidth: 1, color: '#ffd9d9d9' });
 
-      Row() {
-          Text('添加地址')
-            .textAlign(TextAlign.Center)
-            .width('100%')
-            .fontColor(Color.White).fontWeight(FontWeight.Bold)
-
-      }.width(200).height(50)
-      .position({ bottom: 10, right: 10 })
-      .borderRadius(25)
+      Flex({ justifyContent: FlexAlign.Center }) { // 包裹 Button 的 Flex 容器
+        Button("退出登录")
+          .fontSize(25)
+          .fontColor(Color.White)
+          .opacity(0.7)
+          .margin({ bottom: 1 })
+          .onClick(() => {
+            router.pushUrl({
+              url: "pages/LoginPage"
+            });
+          })
+          .alignSelf(ItemAlign.End);
+      }
     }
   }
 
-  // editAddress(index: number): void {
-  //   promptAction.showToast({ message: 'edit: ' + index.toString() })
-  // }
+  editAddress(index: number): void {
+    promptAction.showToast({ message: 'edit: ' + index.toString() });
+  }
 }
