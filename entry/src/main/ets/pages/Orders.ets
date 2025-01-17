@@ -1,37 +1,46 @@
-import {getAllOrders} from '../api/OrderApi'
-import {Order} from '../api/OrderApi'
-import {OrderCard} from '../components/OrderCard'
+import { getAllOrders } from '../api/OrderApi'
+import { Order } from '../api/OrderApi'
+import { OrderCard } from '../components/OrderCard'
 import { GenericResponse } from '../utils/RequestUtil';
 import { promptAction } from '@kit.ArkUI';
+import dayjs, { Dayjs } from 'dayjs';
 
 @Component
 export struct Orders {
   @State orderList: Order[] = [];
   @Provide('router') router: NavPathStack = new NavPathStack();
+  @State isGettingOrders: boolean = false;
 
-  async aboutToAppear(){
-    const  response = await getAllOrders(1);
-    if(response) {
+  async aboutToAppear() {
+    this.isGettingOrders = true;
+    const response = await getAllOrders(1);
+    if (response) {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<Order[]>;
-      this.orderList = parsedResponse.result;
-    } else {
-      promptAction.showToast({message: '请求数据失败'});
+      this.orderList = parsedResponse.result.sort((a: Order, b: Order) => {
+        return b.orderInfoId! - a.orderInfoId!;
+      })
     }
+    this.isGettingOrders = false;
   }
 
   build() {
-    if(this.orderList.length > 0) {
-      List({space : 10}) {
-        ForEach(this.orderList, (item: Order) => {
-          ListItem(){
-            OrderCard({order : item})
-          }
-        })
-      }.padding({left: 8, right: 8})
-      .width('100%').height('100%')
-      .scrollBar(BarState.Off)
-    } else {
-      Text('暂无订单').fontSize(30)
+    Column() {
+      if (this.isGettingOrders) {
+        LoadingProgress().width(100).height(100)
+      }
+      if (this.orderList.length > 0) {
+        List({ space: 10 }) {
+          ForEach(this.orderList, (item: Order) => {
+            ListItem() {
+              OrderCard({ order: item })
+            }
+          })
+        }.padding({ left: 8, right: 8 })
+        .width('100%').height('100%')
+        .scrollBar(BarState.Off)
+      } else if (!this.isGettingOrders) {
+        Text('暂无订单').fontSize(30)
+      }
     }
   }
 }

@@ -21,6 +21,13 @@ export enum OrderStatus {
   DONE = 'DONE',
 }
 
+export const OrderStatusMap: Map<OrderStatus, string> = new Map();
+OrderStatusMap.set(OrderStatus.UNPAID, '待付款');
+OrderStatusMap.set(OrderStatus.UNSEND, '待发货');
+OrderStatusMap.set(OrderStatus.UNGET, '已发货');
+OrderStatusMap.set(OrderStatus.UNCOMMENT, '待评价');
+OrderStatusMap.set(OrderStatus.DONE, '已完成');
+
 export async function getAllOrders(userId:number) {
   return await session.get(`${ORDER}/getAllOrders/${userId}`);
 }

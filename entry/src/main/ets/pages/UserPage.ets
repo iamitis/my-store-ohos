@@ -8,11 +8,11 @@ export struct UserPage {
     Tabs({ barPosition: BarPosition.Start }) {
       TabContent() {
         Orders()
-      }.tabBar('订单')
+      }.tabBar('我的订单')
 
       TabContent() {
         AddressPage()
-      }.tabBar('地址')
+      }.tabBar('地址管理')
     }.scrollable(false)
   }
 }
