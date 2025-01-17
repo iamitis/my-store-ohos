@@ -6,6 +6,9 @@ import { common } from '@kit.AbilityKit';
 // 导入代码二中的API函数
 import { addAddressInfo, AddressInfo, login, register, ResponInfo, User } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
+import { currUser } from './LoginPage';
+import { tabsController } from './Index';
+import { userTabsController } from './UserPage';
 
 interface GeneratedObjectLiteralInterface_1 {}
 
@@ -85,7 +88,7 @@ struct AddAddress {
           try {
             this.area.push(this.province, this.city, this.block)
             const address: AddressInfo= {
-              userId: 1,
+              userId: currUser.id!,
               areaAddress: this.area,
               detailAddress: this.detialAddress,
               phone: '1',
@@ -96,9 +99,7 @@ struct AddAddress {
             const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<AddressInfo>;
             console.info('添加成功');
             // 跳转到地址页
-            router.pushUrl({
-              url: 'pages/Index'
-            });
+            router.back()
           } catch (error) {
             console.error('添加失败', error);
             AlertDialog.show({

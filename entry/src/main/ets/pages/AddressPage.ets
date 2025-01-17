@@ -2,6 +2,8 @@ import { AddressInfo, getAllAddressInfo } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
 import { AddressCard } from '../components/AddressCard';
 import { promptAction, router } from '@kit.ArkUI';
+import { currUser } from './LoginPage';
+
 @Component
 export struct AddressPage {
   @State addressList: AddressInfo[] = [];
@@ -9,7 +11,7 @@ export struct AddressPage {
 
   async aboutToAppear() {
     this.isGettingAddress = true;
-    const response = await getAllAddressInfo(1);
+    const response = await getAllAddressInfo(currUser.id!);
     if (response) {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<AddressInfo[]>;
       this.addressList = parsedResponse.result;

@@ -7,6 +7,13 @@ import { common } from '@kit.AbilityKit';
 import { login, register, ResponInfo, User } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
 
+export let currUser: User = {
+  phone: '',
+  related_phone: '',
+  password: '',
+  role: '',
+}
+
 @Preview
 @Entry
 @Component
@@ -70,9 +77,10 @@ struct LoginPage {
           // 调用登录API
           try {
             const response = await login(this.account, this.password);
-            const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<boolean>;
-            if (parsedResponse.result) {
+            const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<User>;
+            if (parsedResponse && parsedResponse.code === '000') {
               console.info('登录成功');
+              currUser = parsedResponse.result;
               // 跳转到首页
               router.pushUrl({
                 url: 'pages/Index',
@@ -132,7 +140,7 @@ struct LoginPage {
               });
             } else {
               AlertDialog.show({
-                message:"注册失败",
+                message: "注册失败",
                 autoCancel: true,
               });
             }

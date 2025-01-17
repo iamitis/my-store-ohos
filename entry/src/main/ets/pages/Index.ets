@@ -8,6 +8,7 @@ export const tabsController: TabsController = new TabsController();
 @Entry
 @Component
 struct Index {
+  @State currIndex: number = 0;
 
   build() {
     Tabs({ barPosition: BarPosition.End, controller: tabsController }) {
@@ -20,7 +21,7 @@ struct Index {
       }.tabBar('分类')
 
       TabContent() {
-        CartListPage()
+        CartListPage({currTabIndex: this.currIndex})
       }.tabBar('购物车')
 
       TabContent() {
@@ -28,5 +29,8 @@ struct Index {
       }.tabBar('我的')
     }.scrollable(false)
     .height('100%')
+    .onChange((index: number) => {
+      this.currIndex = index;
+    })
   }
 }

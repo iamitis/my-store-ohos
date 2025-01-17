@@ -2,16 +2,33 @@ import { getAllOrders } from '../api/OrderApi'
 import { Order } from '../api/OrderApi'
 import { OrderCard } from '../components/OrderCard'
 import { GenericResponse } from '../utils/RequestUtil';
+import { currUser } from './LoginPage';
 
 @Component
 export struct Orders {
   @State orderList: Order[] = [];
   @Provide('router') router: NavPathStack = new NavPathStack();
   @State isGettingOrders: boolean = false;
+  @Prop @Watch('refresh') currTabIndex: number;
+  index = 0;
+
+  async refresh() {
+    if (this.index === this.currTabIndex) {
+      this.isGettingOrders = true;
+      const response = await getAllOrders(currUser.id!);
+      if (response) {
+        const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<Order[]>;
+        this.orderList = parsedResponse.result.sort((a: Order, b: Order) => {
+          return b.orderInfoId! - a.orderInfoId!;
+        })
+      }
+      this.isGettingOrders = false;
+    }
+  }
 
   async aboutToAppear() {
     this.isGettingOrders = true;
-    const response = await getAllOrders(1);
+    const response = await getAllOrders(currUser.id!);
     if (response) {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<Order[]>;
       this.orderList = parsedResponse.result.sort((a: Order, b: Order) => {
