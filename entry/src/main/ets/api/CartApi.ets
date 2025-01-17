@@ -27,3 +27,7 @@ export async function getShoppingCart(userId: number) {
 export async function addToShoppingCart(cartItem: Cart) {
   return await session.post(`${CARTS}/addCartItem`, cartItem)
 }
+
+export async function deleteCartItem(cartItemId: number) {
+  return await session.delete(`${CARTS}/deleteCartItem/${cartItemId}`);
+}

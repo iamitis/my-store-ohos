@@ -45,5 +45,6 @@ export struct Orders {
         }
       }
     }
+    .backgroundColor('#FFFAFA')
   }
 }
