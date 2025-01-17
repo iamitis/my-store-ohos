@@ -26,5 +26,6 @@ export struct ProductCard {
       }.width(160)
       .margin({top: 2})
     }
+    .backgroundColor('#ffffff')
   }
 }

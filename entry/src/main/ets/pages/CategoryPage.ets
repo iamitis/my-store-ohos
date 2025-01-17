@@ -30,6 +30,7 @@ export struct CategoryPage {
     .title('分类')
     .titleMode(NavigationTitleMode.Mini)
     .hideBackButton(true)
+    .backgroundColor('#FFFAFA')
   }
 }
 
@@ -48,7 +49,7 @@ struct CategoryCard {
         .margin({ left: 25 })
     }.width('90%')
     .height(80)
-    .backgroundColor('#ffd6d4d4')
+    .backgroundColor('#ffffff')
     .borderRadius(10)
   }
 }

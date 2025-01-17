@@ -26,7 +26,7 @@ export struct AddressPage {
       List({ space: 15 }) {
         ForEach(this.addressList, (item: AddressInfo, index: number) => {
           ListItem() {
-            AddressCard({ address: item, index: index, handleEdit: this.editAddress });
+            AddressCard({ address: item, index: index});
           }
         })
       }
@@ -51,7 +51,7 @@ export struct AddressPage {
     }
   }
 
-  editAddress(index: number): void {
-    promptAction.showToast({ message: 'edit: ' + index.toString() });
-  }
+  // editAddress(index: number): void {
+  //   promptAction.showToast({ message: 'edit: ' + index.toString() });
+  // }
 }

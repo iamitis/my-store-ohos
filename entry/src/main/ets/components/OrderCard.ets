@@ -21,7 +21,7 @@ export struct OrderCard {
     }.width('100%')
     .height(100)
     .padding(15)
-    .backgroundColor('#ffd6d4d4')
+    .backgroundColor('#ffffff')
     .borderRadius(10)
   }
 }
