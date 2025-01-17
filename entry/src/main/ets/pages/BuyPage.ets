@@ -31,8 +31,6 @@ export struct BuyPage {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<AddressInfo[]>;
       this.addressList = parsedResponse.result;
       this.selectedAddress = this.addressList[0];
-    } else { // TODO: delete me
-      promptAction.showToast({ message: '请求数据失败' });
     }
   }
 

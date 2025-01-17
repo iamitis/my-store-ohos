@@ -1,3 +1,5 @@
+import { AddressPage } from './AddressPage'
+
 @Component
 export struct UserPage {
   build() {
@@ -15,7 +17,7 @@ export struct UserPage {
       }.tabBar('历史')
 
       TabContent() {
-        Text('地址')
+        AddressPage()
       }.tabBar('地址')
     }.scrollable(false)
   }
