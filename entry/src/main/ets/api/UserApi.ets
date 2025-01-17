@@ -50,3 +50,6 @@ export async function register(user:User) {
 export async function deleteAddressInfo(addressInfoId: number) {
   return await session.delete(`${USERS}/deleteAddressInfo/${addressInfoId}`);
 }
+export async function addAddressInfo(addressInfo:AddressInfo) {
+  return await session.post(`users/addAddressInfo`,addressInfo);
+}

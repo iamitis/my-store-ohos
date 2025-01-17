@@ -2,7 +2,6 @@ import { AddressInfo, getAllAddressInfo } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
 import { AddressCard } from '../components/AddressCard';
 import { promptAction, router } from '@kit.ArkUI';
-
 @Component
 export struct AddressPage {
   @State addressList: AddressInfo[] = [];
@@ -34,6 +33,32 @@ export struct AddressPage {
       .height('100%')
       .padding(15)
       .divider({ strokeWidth: 1, color: '#ffd9d9d9' });
+
+      Flex({ justifyContent: FlexAlign.Center }) { // 包裹 Button 的 Flex 容器
+        Button("刷新")
+          .fontSize(25)
+          .fontColor(Color.White)
+          .opacity(0.7)
+          .margin({ bottom: 1 })
+          .onClick(() => {
+            this.aboutToAppear()
+          })
+          .alignSelf(ItemAlign.End);
+      }
+
+      Flex({ justifyContent: FlexAlign.Center }) { // 包裹 Button 的 Flex 容器
+        Button("添加地址")
+          .fontSize(25)
+          .fontColor(Color.White)
+          .opacity(0.7)
+          .margin({ bottom: 1 })
+          .onClick(() => {
+            router.pushUrl({
+              url: "pages/AddAddress"
+            });
+          })
+          .alignSelf(ItemAlign.End);
+      }
 
       Flex({ justifyContent: FlexAlign.Center }) { // 包裹 Button 的 Flex 容器
         Button("退出登录")
