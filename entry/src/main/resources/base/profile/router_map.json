@@ -14,6 +14,11 @@
       "name": "ProductList",
       "pageSourceFile": "src/main/ets/pages/ProductList.ets",
       "buildFunction": "ProductListBuilder"
+    },
+    {
+      "name": "OrderDetail",
+      "pageSourceFile": "src/main/ets/pages/OrderDetail.ets",
+      "buildFunction" : "OrderDetailBuilder"
     }
   ]
 }
