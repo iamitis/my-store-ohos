@@ -13,4 +13,4 @@ export struct CartCard {
     .backgroundColor('#ffd6d4d4')
     .borderRadius(10)
   }
-}
+}i

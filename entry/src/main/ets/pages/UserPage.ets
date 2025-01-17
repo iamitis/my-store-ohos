@@ -1,3 +1,5 @@
+import {Orders} from './UserPage/Orders'
+
 @Component
 export struct UserPage {
   build() {
@@ -7,7 +9,7 @@ export struct UserPage {
       }.tabBar('总览')
 
       TabContent() {
-        Text('订单')
+        Orders()
       }.tabBar('订单')
 
       TabContent() {
