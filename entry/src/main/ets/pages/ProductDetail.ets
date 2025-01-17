@@ -1,4 +1,7 @@
+import { addToShoppingCart, Cart } from '../api/CartApi';
 import { formatPrice, Product } from '../api/ProductApi';
+import { GenericResponse } from '../utils/RequestUtil';
+import { promptAction } from '@kit.ArkUI';
 
 @Builder
 export function ProductDetailBuilder(name: string, param: Product) {
@@ -12,6 +15,7 @@ export struct ProductDetail {
   scroller: Scroller = new Scroller();
   @State cartButtonColor: string = '#fff3ca4f';
   @State buyButtonColor: string = '#fff54242';
+  @State isAddingToCart: boolean = false;
 
   build() {
     if (this.product) {
@@ -112,6 +116,7 @@ export struct ProductDetail {
               this.cartButtonColor = '#fff3ca4f';
             }
           })
+          .onClick(() => this.handleAddToCart())
 
           Row() {
             Text('立即购买')
@@ -135,6 +140,10 @@ export struct ProductDetail {
         .position({ bottom: 10, right: 10 })
         .borderRadius(25)
 
+        if (this.isAddingToCart) {
+          LoadingProgress().width(100).height(100).position({bottom: 50, left: '40%'})
+        }
+
       }.hideTitleBar(true)
       .backgroundColor('#ffdddcdc')
       .onReady((context: NavDestinationContext) => {
@@ -147,5 +156,24 @@ export struct ProductDetail {
     // TODO: 登录验证
 
       router.pushPathByName('BuyPage', product)
+  }
+
+  async handleAddToCart() {
+    this.isAddingToCart = true;
+    const cart: Cart = {
+      product: this.product!,
+      quantity: 1,
+      productOptionValues: [],
+      userId: 1,
+      cartItemDate: new Date(),
+    };
+    const response = await addToShoppingCart(cart);
+    if (response) {
+      let parsedResponse = JSON.parse(response.toString()!) as GenericResponse<Cart>;
+      if (parsedResponse.code === '000') {
+        promptAction.showToast({message: '已加入购物车！'})
+      }
+    }
+    this.isAddingToCart = false;
   }
 }

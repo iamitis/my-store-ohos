@@ -1,6 +1,5 @@
 import {session} from '../utils/RequestUtil'
 import { Cart } from './CartApi';
-import  {Product} from  './ProductApi'
 
 const ORDER = "users";
 
@@ -24,4 +23,16 @@ export enum OrderStatus {
 
 export async function getAllOrders(userId:number) {
   return await session.get(`${ORDER}/getAllOrders/${userId}`);
+}
+
+export async function createOrder(userId: number, productList: Cart[], addressInfoId: number) {
+  const order: Order = {
+    userId: userId,
+    products: productList,
+    addressInfoId: addressInfoId,
+    orderStatus: OrderStatus.UNSEND,
+    createDate: new Date()
+  }
+  order.totalPrice = productList.reduce((acc, cur) => acc + cur.product!.productNowPrice! * cur.quantity!, 0)
+  return await session.post(`${ORDER}/createOrder`, order)
 }

@@ -4,6 +4,9 @@ import { GenericResponse } from '../utils/RequestUtil';
 import { promptAction } from '@kit.ArkUI';
 import { AddressInfo } from '../api/UserApi';
 import { getAllAddressInfo } from '../api/UserApi';
+import { Cart } from '../api/CartApi';
+import { createOrder } from '../api/OrderApi';
+import { tabsController } from './Index';
 
 @Builder
 export function BuyPageBuilder(name: string, param: Product) {
@@ -21,23 +24,31 @@ export struct BuyPage {
   @State selectedAddress: AddressInfo | null = null;
   @State isAddrExpanded: boolean = false;
   @State selectedBorder: BorderOptions = {width: 0, color: '#ffd9d9d9', style: BorderStyle.Solid};
+  @State successful: boolean = false;
+  @State isOrdering: boolean = false;
+  @State isGettingAddr: boolean = false;
 
   async aboutToAppear() {
     this.totalPrice = this.product?.productNowPrice ?? 0;
 
     // 获取用户地址
+    this.isGettingAddr = true;
     const response = await getAllAddressInfo(1);
     if (response) {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<AddressInfo[]>;
       this.addressList = parsedResponse.result;
       this.selectedAddress = this.addressList[0];
     }
+    this.isGettingAddr = false;
   }
 
   build() {
     NavDestination() {
       Scroll(this.scroller) {
         Column({ space: 10 }) {
+          if (this.isGettingAddr) {
+            LoadingProgress().width(100).height(100)
+          }
           if (this.selectedAddress) {
             AddressCard({ address: this.selectedAddress })
               .width('100%')
@@ -111,11 +122,32 @@ export struct BuyPage {
 
           Divider()
 
-          Button('立即支付' + formatPrice(this.totalPrice), { type: ButtonType.Normal })
-            .width('100%')
-            .backgroundColor('#fff54242')
-            .onClick(this.handlePay)
-            .fontWeight(FontWeight.Bold)
+          if (!this.successful && !this.isOrdering) {
+            Button('立即支付' + formatPrice(this.totalPrice), { type: ButtonType.Normal })
+              .width('100%')
+              .backgroundColor('#fff54242')
+              .onClick(() => this.handlePay())
+              .fontWeight(FontWeight.Bold)
+          } else if (this.successful && !this.isOrdering) {
+            Text('下单成功！')
+              .fontColor('#fff54242')
+              .fontWeight(FontWeight.Bold).fontSize(20)
+
+            Row() {
+              Button('返回商品页', { buttonStyle: ButtonStyleMode.TEXTUAL })
+                .onClick(() => {
+                  this.router.pop();
+                })
+              Button('前往订单页', { buttonStyle: ButtonStyleMode.TEXTUAL })
+                .onClick(() => {
+                  tabsController.changeIndex(3);
+                  this.router.pop();
+                })
+            }
+          } else if (!this.successful && this.isOrdering) {
+            LoadingProgress()
+              .width(100).height(100)
+          }
         }.padding(15)
       }
     }.onReady((context: NavDestinationContext) => {
@@ -127,7 +159,27 @@ export struct BuyPage {
     this.totalPrice = this.product?.productNowPrice! * this.count;
   }
 
-  async handlePay() {
-    promptAction.showToast({message: '下单成功'})
+  handlePay = async () => {
+    let userId = 1;
+    let productList: Cart[] = [
+      {
+        userId: userId,
+        quantity: this.count,
+        product: this.product!,
+        productOptionValues: [],
+      }
+    ];
+    let addressInfoId = this.selectedAddress?.addressInfoId!;
+
+
+    this.isOrdering = true;
+    let response = await createOrder(userId, productList, addressInfoId);
+    if (response) {
+      let parsedResponse = JSON.parse(response.toString()!) as GenericResponse<boolean>;
+      if (parsedResponse.code === '000') {
+        this.successful = true;
+      }
+    }
+    this.isOrdering = false;
   }
 }

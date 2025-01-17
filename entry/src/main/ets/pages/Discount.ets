@@ -5,22 +5,27 @@ import { promptAction } from '@kit.ArkUI'
 
 @Component
 export struct Discount {
-  @State discountList: Product[] = []
-  router: NavPathStack = new NavPathStack()
+  @State discountList: Product[] = [];
+  router: NavPathStack = new NavPathStack();
+  @State isLoading: boolean = false;
 
   async aboutToAppear() {
+    this.isLoading = true
     const response = await getAllDiscountProduct()
     if (response) {
       const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<Product[]>;
       this.discountList = parsedResponse.result;
-    } else { // TODO: delete me
-      promptAction.showToast({ message: '请求数据失败' });
     }
+    this.isLoading = false;
   }
 
   build() {
     Navigation(this.router) {
       Column() {
+        if (this.isLoading) {
+          LoadingProgress()
+            .width(100).height(100)
+        }
         if (this.discountList.length > 0) {
           List({ space: 15 }) {
             ForEach(this.discountList, (item: Product) => {
@@ -39,7 +44,7 @@ export struct Discount {
           .margin({ top: 10 })
           .layoutWeight(1)
           .scrollBar(BarState.Off)
-        } else {
+        } else if (!this.isLoading) {
           Text('暂无商品')
         }
       } // col

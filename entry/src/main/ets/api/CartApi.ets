@@ -23,3 +23,7 @@ export interface ProductOptionValue {
 export async function getShoppingCart(userId: number) {
   return await session.get(`${CARTS}/getShoppingCart/${userId}`);
 }
+
+export async function addToShoppingCart(cartItem: Cart) {
+  return await session.post(`${CARTS}/addCartItem`, cartItem)
+}

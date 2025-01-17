@@ -3,11 +3,14 @@ import { CategoryPage } from './CategoryPage';
 import { Discount } from './Discount';
 import { UserPage } from './UserPage';
 
+export const tabsController: TabsController = new TabsController();
+
 @Entry
 @Component
 struct Index {
+
   build() {
-    Tabs({ barPosition: BarPosition.End }) {
+    Tabs({ barPosition: BarPosition.End, controller: tabsController }) {
       TabContent() {
         Discount()
       }.tabBar('折扣')

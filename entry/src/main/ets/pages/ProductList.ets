@@ -12,8 +12,10 @@ export struct ProductList {
   router: NavPathStack = new NavPathStack();
   @State category: Category | null = null;
   @State productList: Product[] = [];
+  @State isLoading: boolean = false;
 
   async aboutToAppear() {
+    this.isLoading = true;
     if (this.category) {
       const response = await filterProducts(this.category.categoryName, new Map());
       if (response) {
@@ -25,10 +27,15 @@ export struct ProductList {
         }
       }
     }
+    this.isLoading = false;
   }
 
   build() {
     NavDestination() {
+      if (this.isLoading) {
+        LoadingProgress()
+          .width(100).height(100)
+      }
       if (this.productList.length > 0) {
         List({ space: 15 }) {
           ForEach(this.productList, (item: Product) => {
@@ -44,7 +51,7 @@ export struct ProductList {
         .margin({ top: 10 })
         .layoutWeight(1)
         .scrollBar(BarState.Off)
-      } else {
+      } else if (!this.isLoading) {
         Text('暂无商品')
       }
     }.padding({left: 8, right: 8})
