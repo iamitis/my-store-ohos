@@ -1,14 +1,12 @@
 import { getShoppingCart } from '../api/CartApi';
-import { promptAction, router } from '@kit.ArkUI';
 import { GenericResponse } from '../utils/RequestUtil';
 import { CartCard } from '../components/CartCard';
 import { Cart } from '../api/CartApi'
-import { formatPrice } from '../api/ProductApi';
+
 @Component
 export struct CartListPage {
   @State cartList: Cart[] = []
   @Provide('router') router: NavPathStack = new NavPathStack()
-  @State buyButtonColor: string = '#fff54242';
   @State totalPrice:number = 0
   @State isGettingCart: boolean = false;
 

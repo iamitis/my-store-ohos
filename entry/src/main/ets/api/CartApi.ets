@@ -19,15 +19,15 @@ export interface ProductOptionValue {
     productOptionName?:string,
     value?: string
 }
-
+@Concurrent
 export async function getShoppingCart(userId: number) {
-  return await session.get(`${CARTS}/getShoppingCart/${userId}`);
+  return await session.get(`${"users"}/getShoppingCart/${userId}`);
 }
-
+@Concurrent
 export async function addToShoppingCart(cartItem: Cart) {
-  return await session.post(`${CARTS}/addCartItem`, cartItem)
+  return await session.post(`${"users"}/addCartItem`, cartItem)
 }
-
+@Concurrent
 export async function deleteCartItem(cartItemId: number) {
-  return await session.delete(`${CARTS}/deleteCartItem/${cartItemId}`);
+  return await session.delete(`${"users"}/deleteCartItem/${cartItemId}`);
 }

@@ -32,17 +32,17 @@ export interface FilterInfo {
   productCategory?: string;
   attributeValues?: Map<string, string[]>;
 }
-
+@Concurrent
 export async function getAllDiscountProduct() {
-  return await session.get(`${PRODUCTS}/getAllDiscountProduct`);
+  return await session.get(`${'newProducts'}/getAllDiscountProduct`);
 }
-
+@Concurrent
 export async function getAttributesByCategory(category: string) {
-  return await session.get(`${PRODUCTS}/getAttributesByCategory/${category}`)
+  return await session.get(`${'newProducts'}/getAttributesByCategory/${category}`)
 }
-
+@Concurrent
 export async function getAttributeValuesByCategory(category: string) {
-  return await session.get(`${PRODUCTS}/getAttributeValuesByCategory/${category}`)
+  return await session.get(`${'newProducts'}/getAttributeValuesByCategory/${category}`)
 }
 
 export async function filterProducts(category: string, selectedAttrValMap: Map<string, ProductAttributeValue[]>) {
@@ -66,9 +66,9 @@ export async function filterProducts(category: string, selectedAttrValMap: Map<s
     attributeValues: jsonObject,
   })
 }
-
+@Concurrent
 export async function getProductById(productId: number) {
-  return await session.get(`${PRODUCTS}/getProductById/${productId}`)
+  return await session.get(`${'newProducts'}/getProductById/${productId}`)
 }
 
 export interface ProductOption {
@@ -85,17 +85,19 @@ export interface ProductOptionValue {
 }
 
 // 获取某商品的所有选项类
+@Concurrent
 export async function getProductOptions(productId: number) {
-  return await session.get(`${PRODUCTS}/getProductOptions/${productId}`)
+  return await session.get(`${'newProducts'}/getProductOptions/${productId}`)
 }
 
 // 获取某商品的所有选项值
+@Concurrent
 export async function getProductOptionValues(productId: number) {
-  return await session.get(`${PRODUCTS}/getProductOptionValues/${productId}`)
+  return await session.get(`${'newProducts'}/getProductOptionValues/${productId}`)
 }
-
+@Concurrent
 export async function searchProduct(search: string) {
-  return await session.get(`${PRODUCTS}/searchProduct/${search}`)
+  return await session.get(`${'newProducts'}/searchProduct/${search}`)
 }
 
 export function formatPrice(price: number) {
