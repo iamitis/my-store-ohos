@@ -54,3 +54,7 @@ export async function deleteAddressInfo(addressInfoId: number) {
 export async function addAddressInfo(addressInfo:AddressInfo) {
   return await session.post(`users/addAddressInfo`,addressInfo);
 }
+
+export async function logout(userId: number) {
+  return await session.post(`${USERS}/logout/${userId}`);
+}
