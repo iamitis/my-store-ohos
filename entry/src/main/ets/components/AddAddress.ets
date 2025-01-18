@@ -1,30 +1,24 @@
-import { router } from '@kit.ArkUI';
-
-// 引入Context相关
-import { common } from '@kit.AbilityKit';
+import { promptAction, router } from '@kit.ArkUI';
 
 // 导入代码二中的API函数
 import { addAddressInfo, AddressInfo, login, register, ResponInfo, User } from '../api/UserApi';
 import { GenericResponse } from '../utils/RequestUtil';
-import { currUser } from './LoginPage';
-import { tabsController } from './Index';
-import { userTabsController } from './UserPage';
-
-interface GeneratedObjectLiteralInterface_1 {}
+import { currUser } from '../pages/LoginPage';
 
 @Preview
 @Entry
-@Component
-struct AddAddress {
+@CustomDialog
+export struct AddAddress {
+  controller?: CustomDialogController;
   @State btnMsg: string = '保存地址'; //
   @State province: string = ''; //省
   @State city: string = ''; // 市
   @State block: string = ''; // 区
   @State detialAddress: string = ''; // 详细地址
   @State receiver: string = ''; // 收件人
+  @State phone: string = '';
   @State area: string[] = [];
-  // 获取Context
-  private context = getContext(this) as common.UIAbilityContext;
+  onFinished?: () => void;
 
   build() {
 
@@ -44,7 +38,7 @@ struct AddAddress {
       TextInput({ placeholder: '区' })
         .inputStyle()
         .onChange((value: string) => {
-          this.block= value;
+          this.block = value;
         })
       Line().lineStyle()
       TextInput({ placeholder: '详细地址' })
@@ -53,10 +47,17 @@ struct AddAddress {
           this.detialAddress = value;
         })
       Line().lineStyle()
-      TextInput({ placeholder: '收件人' })
+      TextInput({ placeholder: '收件人称呼' })
         .inputStyle()
         .onChange((value: string) => {
           this.receiver = value;
+        })
+      Line().lineStyle()
+      TextInput({ placeholder: '联系方式' })
+        .type(InputType.PhoneNumber)
+        .inputStyle()
+        .onChange((value: string) => {
+          this.phone = value;
         })
       Line().lineStyle()
       Button(this.btnMsg)
@@ -77,9 +78,17 @@ struct AddAddress {
               autoCancel: true,
             });
             return;
-          }if (this.receiver === '' || this.receiver === undefined) {
+          }
+          if (this.receiver === '' || this.receiver === undefined) {
             AlertDialog.show({
-              message: "请输入收件人",
+              message: "请输入收件人称呼",
+              autoCancel: true,
+            });
+            return;
+          }
+          if (this.phone === '' || this.phone === undefined) {
+            AlertDialog.show({
+              message: "请输入联系方式",
               autoCancel: true,
             });
             return;
@@ -87,19 +96,22 @@ struct AddAddress {
           // 调用添加API
           try {
             this.area.push(this.province, this.city, this.block)
-            const address: AddressInfo= {
+            const address: AddressInfo = {
               userId: currUser.id!,
               areaAddress: this.area,
               detailAddress: this.detialAddress,
-              phone: '1',
+              phone: this.phone,
               receiver: this.receiver,
               isDefault: false
             }
             const response = await addAddressInfo(address);
             const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<AddressInfo>;
+            promptAction.showToast({message: '添加成功'})
             console.info('添加成功');
-            // 跳转到地址页
-            router.back()
+            // 调用onFinished
+            if (this.onFinished) {
+              this.onFinished();
+            }
           } catch (error) {
             console.error('添加失败', error);
             AlertDialog.show({
@@ -109,9 +121,8 @@ struct AddAddress {
           }
         })
     }
-    .height('100%')
     .width('100%')
-    .padding(0)
+    .padding({ top: 15, bottom: 15 })
   }
 }
 

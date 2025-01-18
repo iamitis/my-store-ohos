@@ -7,6 +7,9 @@ export struct AddressCard {
   @Prop address: AddressInfo;
   @Prop index: number;
   @State backColor: string = '#ffffff';
+  handleRemoved?: () => void;
+  @State canRemoved: boolean = true;
+
   // handleEdit?: (index: number) => void;
   build() {
     if (this.address) {
@@ -46,30 +49,35 @@ export struct AddressCard {
           }
         })
 
-        Button({ buttonStyle: ButtonStyleMode.TEXTUAL }) {
-          Image($r('app.media.ic_public_delete')).height(20).width(20)
-        }.height(30).width(30)
-        .onClick(() => this.handledeleteAddress())
+        if (this.canRemoved) {
+          Button({ buttonStyle: ButtonStyleMode.TEXTUAL }) {
+            Image($r('app.media.ic_public_delete')).height(20).width(20)
+          }.height(30).width(30)
+          .onClick(() => this.handledeleteAddress())
+        }
       }.width('100%')
       .backgroundColor(this.backColor)
     }
   }
+
   async handledeleteAddress() {
     let id = 0;
-    if(this.address.addressInfoId){
+    if (this.address.addressInfoId) {
       id = this.address.addressInfoId;
     }
     const response = await deleteAddressInfo(id);
     if (response) {
       let parsedResponse = JSON.parse(response.toString()!) as GenericResponse<boolean>;
       if (parsedResponse.code === '000') {
-        promptAction.showToast({message: '已删除！'})
-      }else{
-        promptAction.showToast({message: '删除失败！'})
+        promptAction.showToast({ message: '已删除！' })
+        if (this.handleRemoved) {
+          this.handleRemoved();
+        }
+      } else {
+        promptAction.showToast({ message: '删除失败！' })
       }
     }
   }
-
 }
 
 

@@ -50,7 +50,7 @@ export struct BuyPage {
             LoadingProgress().width(100).height(100)
           }
           if (this.selectedAddress) {
-            AddressCard({ address: this.selectedAddress })
+            AddressCard({ address: this.selectedAddress, canRemoved: false })
               .width('100%')
               .onClick(() => {
                 this.isAddrExpanded = !this.isAddrExpanded;
@@ -62,7 +62,7 @@ export struct BuyPage {
           if (this.isAddrExpanded && this.addressList.length > 1) {
             ForEach(this.addressList, (item: AddressInfo) => {
               if (item.addressInfoId !== this.selectedAddress?.addressInfoId) {
-                AddressCard({ address: item })
+                AddressCard({ address: item, canRemoved: false })
                   .width('100%')
                   .onClick(() => {
                     this.selectedAddress = item;

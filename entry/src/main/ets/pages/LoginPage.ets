@@ -22,6 +22,7 @@ struct LoginPage {
   @State btnMsg: string = '登录';
   @State account: string = ''; // 账号
   @State password: string = ''; // 密码
+  @State isLogging: boolean = false;
   // 获取Context
   private context = getContext(this) as common.UIAbilityContext;
 
@@ -55,8 +56,11 @@ struct LoginPage {
           this.password = value;
         })
       Line().lineStyle()
+      if (this.isLogging) {
+        LoadingProgress().width(100).height(100).position({bottom: 250, left: '40%'}).zIndex(1)
+      }
       Button(this.btnMsg)
-        .width('80%')
+        .width('50%')
         .margin({ top: 100 })
         .height(50)
         .onClick(async () => { // 使用async函数以便进行API调用
@@ -76,11 +80,13 @@ struct LoginPage {
           }
           // 调用登录API
           try {
+            this.isLogging = true;
             const response = await login(this.account, this.password);
             const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<User>;
             if (parsedResponse && parsedResponse.code === '000') {
               console.info('登录成功');
               currUser = parsedResponse.result;
+              this.isLogging = false;
               // 跳转到首页
               router.pushUrl({
                 url: 'pages/Index',
@@ -90,12 +96,14 @@ struct LoginPage {
                 }
               });
             } else {
+              this.isLogging = false;
               AlertDialog.show({
                 message: "账号或密码错误",
                 autoCancel: true,
               });
             }
           } catch (error) {
+            this.isLogging = false;
             console.error('登录失败', error);
             AlertDialog.show({
               message: "登录失败，请稍后再试",
@@ -103,8 +111,8 @@ struct LoginPage {
             });
           }
         })
-      Button("注册新账号")
-        .width('40%')
+      Button("注册新账号", {buttonStyle: ButtonStyleMode.TEXTUAL})
+        .width('50%')
         .margin({ top: 10 })
         .height(50)
         .onClick(async () => { // 使用async函数以便进行API调用
@@ -124,6 +132,7 @@ struct LoginPage {
           }
           // 调用注册API
           try {
+            this.isLogging = true;
             const newUser: User = {
               role: "PARENT",
               phone: this.account,
@@ -133,18 +142,21 @@ struct LoginPage {
             const response = await register(newUser);
             const parsedResponse = JSON.parse(response.toString()!) as GenericResponse<ResponInfo>;
             if (parsedResponse.result) {
+              this.isLogging = false;
               console.info('注册成功');
               AlertDialog.show({
                 message: "注册成功",
                 autoCancel: true,
               });
             } else {
+              this.isLogging = false;
               AlertDialog.show({
                 message: "注册失败",
                 autoCancel: true,
               });
             }
           } catch (error) {
+            this.isLogging = false;
             console.error('出现错误', error);
             AlertDialog.show({
               message: "出现错误，请稍后再试",
