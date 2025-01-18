@@ -7,6 +7,7 @@ import { getAllAddressInfo } from '../api/UserApi';
 import { Cart } from '../api/CartApi';
 import { createOrder } from '../api/OrderApi';
 import { tabsController } from './Index';
+import { userTabsController } from './UserPage';
 
 @Builder
 export function BuyPageBuilder(name: string, param: Product) {
@@ -140,6 +141,9 @@ export struct BuyPage {
                 })
               Button('前往订单页', { buttonStyle: ButtonStyleMode.TEXTUAL })
                 .onClick(() => {
+                  userTabsController.changeIndex(1);
+                  setTimeout(() => {}, 1200);
+                  userTabsController.changeIndex(0);
                   tabsController.changeIndex(3);
                   this.router.pop();
                 })
